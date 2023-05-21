@@ -7,12 +7,15 @@ import { useState } from "react";
 import { Button } from "~/component/Button";
 import { FormGroup } from "~/component/FormGroup";
 import { Input } from "~/component/Input";
+import { useBuyCredits } from "~/hooks/useBuyCredits";
 import { api } from "~/utils/api";
 
 const GeneratePage: NextPage = () => {
   const [form, setForm] = useState({
     prompt: "",
   });
+
+  const { buyCredits } = useBuyCredits();
 
   const [imageUrl, setImageUrl] = useState("");
 
@@ -62,13 +65,22 @@ const GeneratePage: NextPage = () => {
           </Button>
         )}
         {isLogedIn && (
-          <Button
-            onClick={() => {
-              signOut().catch(console.error);
-            }}
-          >
-            Log Out
-          </Button>
+          <>
+            <Button
+              onClick={() => {
+                buyCredits().catch(console.error);
+              }}
+            >
+              Buy Credits
+            </Button>
+            <Button
+              onClick={() => {
+                signOut().catch(console.error);
+              }}
+            >
+              Log Out
+            </Button>
+          </>
         )}
         <form className="flex flex-col gap-4" onSubmit={handleFormSubmit}>
           <FormGroup>
