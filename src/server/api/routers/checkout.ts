@@ -1,13 +1,8 @@
-import { z } from "zod";
-
-import {
-  createTRPCRouter,
-  publicProcedure,
-  protectedProcedure,
-} from "~/server/api/trpc";
+import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 
 import Stripe from "stripe";
 import { env } from "~/env.mjs";
+
 const stripe = new Stripe(env.STRIPE_SECRET_KEY, {
   apiVersion: "2022-11-15",
 });
@@ -19,9 +14,10 @@ export const checkoutRouter = createTRPCRouter({
       metadata: {
         userId: ctx.session.user.id,
       },
-      success_url: `${env.HOST_NAME}/generate`,
       line_items: [{ price: env.PRICE_ID, quantity: 1 }],
       mode: "payment",
+      success_url: `${env.HOST_NAME}/generate`,
+      cancel_url: `${env.HOST_NAME}/generate`,
     });
   }),
 });

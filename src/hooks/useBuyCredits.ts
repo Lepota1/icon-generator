@@ -9,10 +9,10 @@ export function useBuyCredits() {
 
   return {
     buyCredits: async () => {
-      const responce = await checkout.mutateAsync();
+      const response = await checkout.mutateAsync();
       const stripe = await stripePromise;
       await stripe?.redirectToCheckout({
-        sessionId: responce.id,
+        sessionId: response.id,
       });
     },
   };
